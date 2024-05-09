@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
+import useSound from 'use-sound';
 import { ChevronDown } from 'react-feather';
 import {
   Text,
@@ -39,8 +40,8 @@ type TimerDurations = {
 
 export default function PomodoroTimer() {
 
+  const [play] = useSound('/bell.wav');
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
-  const audioRef = useRef(new Audio('/bell.wav'));
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
   const [timerDurations, setTimerDurations] = useState<TimerDurations>({
     workTime: 25 * 60,
@@ -56,7 +57,7 @@ export default function PomodoroTimer() {
 
   useEffect(() => {
     if (timeRemaining === 0) {
-      playChime();
+      play();
       setCycleCount((prev) => {
         return tabIndex === 0
           ? { ...prev, workCount: prev.workCount + 1 }
@@ -75,12 +76,6 @@ export default function PomodoroTimer() {
       setTimeRemaining(timerDurations.workTime);
     } else setTimeRemaining(timerDurations.breakTime);
   }, [tabIndex]);
-
-  const playChime = () => {
-    if (audioRef.current) {
-      audioRef.current.play();
-    }
-  };
 
   const startTimer = () => {
     setIsDropdownOpen(false);

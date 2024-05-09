@@ -1,3 +1,4 @@
+"use client";
 import PomodoroTimer from './components/PomodoroTimer';
 import { ChakraProvider } from '@chakra-ui/react'
 
